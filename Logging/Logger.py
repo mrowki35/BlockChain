@@ -36,7 +36,7 @@ class Logger:
         """Logs an error message."""
         self._write_log("ERROR", message)
 
-    def error_with_severity(self, message: str, severity: Severity):
+    def error(self, message: str, severity: Severity):
         """Logs an error message with a specified severity from the Severity enum."""
         if not isinstance(severity, Severity):
             raise ValueError("Severity must be an instance of the Severity enum.")

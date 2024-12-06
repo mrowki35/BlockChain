@@ -2,8 +2,6 @@ import os
 import pytest
 from Logging.Logger import Logger
 
-
-# Test log file name
 TEST_LOG_FILE = "test_log.log"
 
 @pytest.fixture(scope="function", autouse=True)
@@ -34,7 +32,7 @@ def test_logging_to_same_file():
 
     logger1.log("Application started.")
     logger2.warning("This is a warning from logger2.")
-    logger3.error_with_severity("Critical issue logged by logger3!", "CRITICAL")
+    logger3.error("Critical issue logged by logger3!", "CRITICAL")
 
 
     assert os.path.exists(TEST_LOG_FILE), "Log file was not created"
@@ -53,8 +51,8 @@ def test_logging_severity_enum():
 
     logger = Logger(file_name=TEST_LOG_FILE)
 
-    logger.error_with_severity("Low severity error", Severity.LOW)
-    logger.error_with_severity("Blocker severity error", Severity.BLOCKER)
+    logger.error("Low severity error", Severity.LOW)
+    logger.error("Blocker severity error", Severity.BLOCKER)
 
     with open(TEST_LOG_FILE, "r") as log_file:
         logs = log_file.readlines()
