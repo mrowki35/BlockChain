@@ -3,7 +3,7 @@ class VotingAPI:
         pass
     def castVote(self, resolutionId: str, voterId: str, voteChoice: any):
         pass
-    def getVotingResults(self, resolutionId; str):
+    def getVotingResults(self, resolution_id:str):
         pass
     def collectVotes(self):
         pass
