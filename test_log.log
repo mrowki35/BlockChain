@@ -1,0 +1,3 @@
+2024-12-06 21:25:59 [INFO] Application started.
+2024-12-06 21:25:59 [WARNING] This is a warning from logger2.
+2024-12-06 21:25:59 [ERROR-CRITICAL] Critical issue logged by logger3!
