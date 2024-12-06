@@ -1,6 +1,6 @@
 import os
 import pytest
-from Logging.Logger import Logger
+from Logging.Logger import Logger, Severity
 
 TEST_LOG_FILE = "test_log.log"
 
@@ -32,7 +32,7 @@ def test_logging_to_same_file():
 
     logger1.log("Application started.")
     logger2.warning("This is a warning from logger2.")
-    logger3.error("Critical issue logged by logger3!", "CRITICAL")
+    logger3.error("Critical issue logged by logger3!", Severity.CRITICAL)
 
 
     assert os.path.exists(TEST_LOG_FILE), "Log file was not created"
@@ -47,7 +47,6 @@ def test_logging_to_same_file():
 
 def test_logging_severity_enum():
     """Test logging with Severity enum."""
-    from Blockchain.Logging.Logger import Severity
 
     logger = Logger(file_name=TEST_LOG_FILE)
 
