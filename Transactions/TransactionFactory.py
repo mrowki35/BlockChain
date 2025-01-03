@@ -1,9 +1,11 @@
 
-from Transaction import Transaction
-from SellingSharesTransaction import SellingSharesTransaction
+from Transactions.Transaction import Transaction
+from Transactions.SellingSharesTransaction import SellingSharesTransaction
 from Blockchain.Blockchain import Blockchain
+from Transactions.BuyingSharesTransaction import BuyingSharesTransaction
 
 import json
+
 
 
 class TransactionFactory:
@@ -11,6 +13,13 @@ class TransactionFactory:
     def create_transaction(transaction_type: str, **kwargs) -> Transaction:
         if transaction_type == "SELLING_SHARES":
             return SellingSharesTransaction(
+                seller=kwargs.get("seller"),
+                buyer=kwargs.get("buyer"),
+                shares=kwargs.get("shares"),
+                price=kwargs.get("price")
+            )
+        elif transaction_type == "BUYING_SHARES":
+            return BuyingSharesTransaction(
                 seller=kwargs.get("seller"),
                 buyer=kwargs.get("buyer"),
                 shares=kwargs.get("shares"),
