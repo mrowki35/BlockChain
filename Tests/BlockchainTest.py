@@ -7,9 +7,9 @@ class TestBlockchainIterator(unittest.TestCase):
         blockchain = Blockchain()
 
         # Dodajmy kilka bloków
-        blockchain.mineBlock("Test1")
-        blockchain.mineBlock("Test2")
-        blockchain.mineBlock("Test3")
+        blockchain.mine_block("Test1")
+        blockchain.mine_block("Test2")
+        blockchain.mine_block("Test3")
 
         # Przekształcamy obiekt blockchain w listę za pomocą list(...)
         blocks_list = list(blockchain)
@@ -30,12 +30,12 @@ class TestBlockchainIterator(unittest.TestCase):
         blockchain = Blockchain()
 
         # Kopiemy kilka bloków
-        blockchain.mineBlock("Block #1 data")
-        blockchain.mineBlock("Block #2 data")
-        blockchain.mineBlock("Block #3 data")
+        blockchain.mine_block("Block #1 data")
+        blockchain.mine_block("Block #2 data")
+        blockchain.mine_block("Block #3 data")
 
         # Powinno zwrócić True, bo nikt nie manipulował blokami.
-        self.assertTrue(blockchain.validateChain())
+        self.assertTrue(blockchain.validate_chain())
 
     def test_validate_chain_broken(self):
         """
@@ -45,15 +45,15 @@ class TestBlockchainIterator(unittest.TestCase):
         blockchain = Blockchain()
 
         # Kopiemy kilka bloków
-        blockchain.mineBlock("Block #1 data")
-        blockchain.mineBlock("Block #2 data")
-        blockchain.mineBlock("Block #3 data")
+        blockchain.mine_block("Block #1 data")
+        blockchain.mine_block("Block #2 data")
+        blockchain.mine_block("Block #3 data")
 
         # Symulujemy manipulację danymi w drugim bloku (o indeksie [1])
         blockchain.chain[1].data = "Manipulated data"
 
         # Powinno zwrócić False, bo łańcuch został uszkodzony
-        self.assertFalse(blockchain.validateChain())
+        self.assertFalse(blockchain.validate_chain())
 
 if __name__ == "__main__":
     unittest.main()
