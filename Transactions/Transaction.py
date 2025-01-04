@@ -1,3 +1,4 @@
+import copy
 import json
 import datetime as dt
 from abc import ABC, abstractmethod
@@ -18,3 +19,8 @@ class Transaction(ABC):
             "data": self.data,
             "timestamp": self.timestamp
         }
+    def clone(self):
+        """
+        Tworzy głęboką kopię obiektu Transcaction.
+        """
+        return copy.deepcopy(self)

@@ -1,3 +1,6 @@
+import copy
+
+
 class Block:
     def __init__(self, data: list, proof: int, previous_hash: str, index: int, timestamp: str) -> None:
         """
@@ -24,3 +27,8 @@ class Block:
             "data": self.data,
             "timestamp": self.timestamp
         }
+    def clone(self):
+        """
+        Tworzy głęboką kopię obiektu Block.
+        """
+        return copy.deepcopy(self)
