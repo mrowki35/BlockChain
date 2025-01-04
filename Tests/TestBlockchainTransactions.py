@@ -3,7 +3,7 @@ import unittest
 import json
 
 from Blockchain.Blockchain import Blockchain
-from Transactions.TransactionFactory import TransactionFactory
+from Transactions.StockTransactionFactory import StockTransactionFactory
 
 class TestBlockchainTransactions(unittest.TestCase):
 
@@ -12,7 +12,7 @@ class TestBlockchainTransactions(unittest.TestCase):
         Test dodania do blockchaina transakcji SELLING_SHARES.
         """
         blockchain = Blockchain()
-        factory = TransactionFactory()
+        factory = StockTransactionFactory()
 
         tx_sell = factory.create_transaction(
             transaction_type="SELLING_SHARES",
@@ -48,7 +48,7 @@ class TestBlockchainTransactions(unittest.TestCase):
         Test dodania do blockchaina transakcji BUYING_SHARES.
         """
         blockchain = Blockchain()
-        factory = TransactionFactory()
+        factory = StockTransactionFactory()
 
         tx_buy = factory.create_transaction(
             transaction_type="BUYING_SHARES",
@@ -84,7 +84,7 @@ class TestBlockchainTransactions(unittest.TestCase):
         Test dodania wielu bloków z różnymi transakcjami (sprzedaż i kupno).
         """
         blockchain = Blockchain()
-        factory = TransactionFactory()
+        factory = StockTransactionFactory()
 
         tx1 = factory.create_transaction(
             transaction_type="SELLING_SHARES",
