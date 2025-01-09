@@ -1,3 +1,6 @@
+from Transactions.Transaction import Transaction
+
+
 class TransactionHandler:
     def __init__(self):
         self.next_handler = None
@@ -9,7 +12,7 @@ class TransactionHandler:
         self.next_handler = handler
         return handler
 
-    def process(self, transaction: dict) -> bool:
+    def process(self, transaction: Transaction) -> bool:
         """
         Przetwarza transakcję i przekazuje ją do następnego handlera, jeśli istnieje.
         """
