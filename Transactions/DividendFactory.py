@@ -1,6 +1,7 @@
 from .AbstractTransactionFactory import AbstractTransactionFactory
 from .PayingDividendsTransaction import PayingDividendsTransaction
 
+
 class DividendFactory(AbstractTransactionFactory):
     def create_transaction(self, **kwargs) -> PayingDividendsTransaction:
         """

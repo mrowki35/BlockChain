@@ -1,4 +1,6 @@
 from enum import Enum, auto
+
+
 class Severity(Enum):
     """Enumeration for log severity levels."""
     LOW = auto()

@@ -55,5 +55,6 @@ class TestBlockchainIterator(unittest.TestCase):
         # Powinno zwrócić False, bo łańcuch został uszkodzony
         self.assertFalse(blockchain.validate_chain())
 
+
 if __name__ == "__main__":
     unittest.main()

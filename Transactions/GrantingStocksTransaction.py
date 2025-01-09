@@ -1,5 +1,6 @@
 from .Transaction import Transaction
 
+
 class GrantingStocksTransaction(Transaction):
     def __init__(self, company: str, grantee: str, shares: int) -> None:
         """
@@ -20,8 +21,8 @@ class GrantingStocksTransaction(Transaction):
         Walidacja transakcji przyznania akcji.
         """
         return (
-            isinstance(self.data["shares"], int) and self.data["shares"] > 0 and
-            bool(self.data["company"]) and
-            bool(self.data["grantee"]) and
-            self.data["company"] != self.data["grantee"]
+                isinstance(self.data["shares"], int) and self.data["shares"] > 0 and
+                bool(self.data["company"]) and
+                bool(self.data["grantee"]) and
+                self.data["company"] != self.data["grantee"]
         )

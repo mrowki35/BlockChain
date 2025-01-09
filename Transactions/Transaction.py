@@ -3,6 +3,7 @@ import json
 import datetime as dt
 from abc import ABC, abstractmethod
 
+
 class Transaction(ABC):
     def __init__(self, transaction_type: str, data: dict) -> None:
         self.transaction_type = transaction_type
@@ -19,6 +20,7 @@ class Transaction(ABC):
             "data": self.data,
             "timestamp": self.timestamp
         }
+
     def clone(self):
         """
         Tworzy głęboką kopię obiektu Transcaction.

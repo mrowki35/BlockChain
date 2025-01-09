@@ -1,5 +1,6 @@
 from .Transaction import Transaction
 
+
 class PayingDividendsTransaction(Transaction):
     def __init__(self, company: str, shareholder: str, shares: int, dividend_per_share: float) -> None:
         """
@@ -24,9 +25,9 @@ class PayingDividendsTransaction(Transaction):
         Walidacja transakcji wypłaty dywidend.
         """
         return (
-            bool(self.data["company"]) and
-            bool(self.data["shareholder"]) and
-            self.data["company"] != self.data["shareholder"] and
-            isinstance(self.data["shares"], int) and self.data["shares"] > 0 and
-            isinstance(self.data["dividend_per_share"], float) and self.data["dividend_per_share"] > 0.0
+                bool(self.data["company"]) and
+                bool(self.data["shareholder"]) and
+                self.data["company"] != self.data["shareholder"] and
+                isinstance(self.data["shares"], int) and self.data["shares"] > 0 and
+                isinstance(self.data["dividend_per_share"], float) and self.data["dividend_per_share"] > 0.0
         )

@@ -1,7 +1,8 @@
 import unittest
 from Handlers.ValidationHandler import ValidationHandler
 from Handlers.ComplianceHandler import ComplianceHandler
-from Handlers.ExecutionHandler import  ExecutionHandler
+from Handlers.ExecutionHandler import ExecutionHandler
+
 
 class TestTransactionHandlers(unittest.TestCase):
     def setUp(self):
@@ -43,6 +44,7 @@ class TestTransactionHandlers(unittest.TestCase):
 
         result = self.validation_handler.process(transaction)
         self.assertFalse(result)
+
 
 if __name__ == "__main__":
     unittest.main()

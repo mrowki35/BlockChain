@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from .Transaction  import Transaction
+from .Transaction import Transaction
+
 
 class AbstractTransactionFactory(ABC):
 

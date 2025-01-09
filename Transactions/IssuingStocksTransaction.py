@@ -1,5 +1,6 @@
 from .Transaction import Transaction
 
+
 class IssuingStocksTransaction(Transaction):
     def __init__(self, company: str, shares: int, price: float) -> None:
         """
@@ -20,7 +21,7 @@ class IssuingStocksTransaction(Transaction):
         Walidacja transakcji emisji akcji.
         """
         return (
-            isinstance(self.data["shares"], int) and self.data["shares"] > 0 and
-            isinstance(self.data["price"], float) and self.data["price"] > 0.0 and
-            bool(self.data["company"])
+                isinstance(self.data["shares"], int) and self.data["shares"] > 0 and
+                isinstance(self.data["price"], float) and self.data["price"] > 0.0 and
+                bool(self.data["company"])
         )

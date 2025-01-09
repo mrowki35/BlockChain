@@ -4,6 +4,7 @@ import json
 from Blockchain.Blockchain import Blockchain
 from Transactions.VotingTransactionFactory import VotingTransactionFactory
 
+
 class TestVotingTransaction(unittest.TestCase):
 
     def test_voting_results_transaction(self):
@@ -63,6 +64,7 @@ class TestVotingTransaction(unittest.TestCase):
 
         # Walidacja powinna zwrócić False
         self.assertFalse(tx_invalid.validate(), "Transakcja powinna być niepoprawna.")
+
 
 if __name__ == "__main__":
     unittest.main()

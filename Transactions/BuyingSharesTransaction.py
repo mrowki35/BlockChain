@@ -1,4 +1,3 @@
-
 from .Transaction import Transaction
 
 
@@ -25,8 +24,8 @@ class BuyingSharesTransaction(Transaction):
         W przykładzie przyjmujemy podobną logikę jak w SellingSharesTransaction.
         """
         return (
-            isinstance(self.data["shares"], int) and self.data["shares"] > 0 and
-            isinstance(self.data["price"], float) and self.data["price"] > 0.0 and
-            bool(self.data["seller"]) and bool(self.data["buyer"]) and
-            self.data["seller"] != self.data["buyer"]
+                isinstance(self.data["shares"], int) and self.data["shares"] > 0 and
+                isinstance(self.data["price"], float) and self.data["price"] > 0.0 and
+                bool(self.data["seller"]) and bool(self.data["buyer"]) and
+                self.data["seller"] != self.data["buyer"]
         )

@@ -8,6 +8,7 @@ app = Flask(__name__)
 # Tworzymy instancję blockchain
 blockchain = Blockchain()
 
+
 @app.route("/chain", methods=["GET"])
 def get_chain():
     """
@@ -15,6 +16,7 @@ def get_chain():
     """
     chain = [block.toDictionary() for block in blockchain.chain]
     return jsonify(chain), 200
+
 
 @app.route("/mine", methods=["POST"])
 def mine_block():
@@ -28,6 +30,7 @@ def mine_block():
     new_block = blockchain.mine_block(data)
     return jsonify({"message": "Block mined successfully!", "block": new_block.toDictionary()}), 201
 
+
 @app.route("/validate", methods=["GET"])
 def validate_chain():
     """
@@ -38,6 +41,7 @@ def validate_chain():
         return jsonify({"message": "Blockchain is valid!"}), 200
     else:
         return jsonify({"error": "Blockchain is invalid!"}), 400
+
 
 @app.route("/add_block", methods=["POST"])
 def add_block():
@@ -65,6 +69,7 @@ def add_block():
         return jsonify({"message": "Block added successfully!"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @app.route("/sync", methods=["POST"])
 def sync_chain():
@@ -97,6 +102,7 @@ def sync_chain():
             return jsonify({"error": "Failed to fetch chain from neighbor!"}), response.status_code
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

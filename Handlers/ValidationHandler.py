@@ -1,5 +1,6 @@
 from .TransactionHandler import TransactionHandler
 
+
 class ValidationHandler(TransactionHandler):
     def process(self, transaction: dict) -> bool:
         """

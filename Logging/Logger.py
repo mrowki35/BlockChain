@@ -3,13 +3,7 @@ from datetime import datetime
 from SeverityEnum import Severity
 
 from enum import Enum, auto
-# class Severity(Enum):
-#     """Enumeration for log severity levels."""
-#     LOW = auto()
-#     MEDIUM = auto()
-#     HIGH = auto()
-#     CRITICAL = auto()
-#     BLOCKER = auto()
+
 
 class Logger:
     _instance = None
@@ -51,13 +45,10 @@ class Logger:
             raise ValueError("Severity must be an instance of the Severity enum.")
         self._write_log(f"ERROR-{severity.name}", message)
 
-
     def _write_log(self, level: str, message: str):
         """Writes a log entry with the specified level and message."""
         timestamp = self._get_timestamp()
         log_entry = f"{timestamp} [{level}] {message}"
         with open(self.file_name, "a") as log_file:
             log_file.write(log_entry + "\n")
-        #print(log_entry) 
-
-
+        # print(log_entry)

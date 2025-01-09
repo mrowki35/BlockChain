@@ -1,5 +1,6 @@
-
 from .Transaction import Transaction
+
+
 class SellingSharesTransaction(Transaction):
     def __init__(self, seller: str, buyer: str, shares: int, price: float) -> None:
         data = {
@@ -12,8 +13,8 @@ class SellingSharesTransaction(Transaction):
 
     def validate(self) -> bool:
         return (
-            isinstance(self.data["shares"], int) and self.data["shares"] > 0 and
-            isinstance(self.data["price"], float) and self.data["price"] > 0.0 and
-            bool(self.data["seller"]) and bool(self.data["buyer"]) and
-            self.data["seller"] != self.data["buyer"]
+                isinstance(self.data["shares"], int) and self.data["shares"] > 0 and
+                isinstance(self.data["price"], float) and self.data["price"] > 0.0 and
+                bool(self.data["seller"]) and bool(self.data["buyer"]) and
+                self.data["seller"] != self.data["buyer"]
         )

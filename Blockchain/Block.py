@@ -27,6 +27,7 @@ class Block:
             "data": self.data,
             "timestamp": self.timestamp
         }
+
     def clone(self):
         """
         Tworzy głęboką kopię obiektu Block.

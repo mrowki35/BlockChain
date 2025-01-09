@@ -2,10 +2,12 @@ from .AbstractTransactionFactory import AbstractTransactionFactory
 from .Transaction import Transaction
 from .VotingResultsTransaction import VotingResultsTransaction
 
+
 class VotingTransactionFactory(AbstractTransactionFactory):
     """
     Fabryka odpowiedzialna za transakcje związane z wynikami głosowania.
     """
+
     def create_transaction(self, **kwargs) -> Transaction:
         transaction_type = kwargs.get("transaction_type", "")
 
