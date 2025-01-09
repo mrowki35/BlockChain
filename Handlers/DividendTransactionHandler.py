@@ -9,7 +9,7 @@ class DividendTransactionHandler(TransactionHandler):
         Walidacja transakcji dywidendowych.
         """
         if isinstance(transaction, PayingDividendsTransaction):
-            if transaction.data['dividend_per_share'] <= 0 or transaction.data['shares'] <= 0:
+            if transaction['dividend_per_share'] <= 0 or transaction['shares'] <= 0:
                 print("Validation failed: Invalid dividend parameters.")
                 return False
 

@@ -7,10 +7,10 @@ class GeneralValidationHandler(TransactionHandler):
         """
         Ogólna walidacja transakcji, np. sprawdzenie pól wspólnych dla wszystkich typów.
         """
-        if not transaction.company:
+        if not transaction.data['company']:
             print("Validation failed: Missing 'company' field.")
             return False
-        if hasattr(transaction, "amount") and transaction.amount <= 0:
+        if hasattr(transaction, "amount") and transaction.data['amount'] <= 0:
             print("Validation failed: 'amount' must be greater than zero.")
             return False
 
