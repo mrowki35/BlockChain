@@ -1,7 +1,8 @@
-
-/Blockchain/__pycache__
-/Transactions/__pycache__
 /.venv
 /.idea
-/Tests/__pycache__
 application.log
+/Blockchain/__pycache__/
+/Logging/__pycache__/
+/Handlers/__pycache__/
+/Transactions/__pycache__
+/Tests/__pycache__
