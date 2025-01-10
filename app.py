@@ -1,8 +1,12 @@
-from pathlib import Path
 from flask import Flask, jsonify, request
 import requests
 import sys
 from Blockchain.Blockchain import Blockchain
+from Handlers.CapitalTransactionHandler import CapitalTransactionHandler
+from Handlers.DividendTransactionHandler import DividendTransactionHandler
+from Handlers.StockTransactionHandler import StockTransactionHandler
+from Handlers.ValidationHandler import VotingTransactionHandler
+from Handlers.save_handler import SaveHandler
 from Logging.Logger import Logger
 from Logging.SeverityEnum import Severity
 
@@ -14,6 +18,16 @@ logger = Logger()
 # Blockchain instance and peers set
 blockchain = Blockchain()
 peers = set()
+
+stock_handler = StockTransactionHandler()
+capital_handler = CapitalTransactionHandler()
+dividend_handler = DividendTransactionHandler()
+voting_handler = VotingTransactionHandler()
+save_handler = SaveHandler()
+
+stock_handler.set_next(capital_handler) \
+    .set_next(dividend_handler) \
+    .set_next(voting_handler)
 
 
 @app.route('/', methods=['GET'])
@@ -32,10 +46,21 @@ def mine_block():
     data = data_json.get('data', "No data")
     new_block = blockchain.mine_block(data=data)
     logger.log(f"Block mined successfully: {new_block.toDictionary()}")
+
+    block_data = new_block.data
+
+    if isinstance(block_data, dict):
+        save_handler.save(stock_handler.handle(block_data))
+    elif isinstance(block_data, list):
+        for tx_data in block_data:
+            save_handler.save(stock_handler.handle(tx_data))
+    else:
+        logger.log("No valid transaction data structure recognized")
+
     return jsonify(new_block.toDictionary()), 200
 
 
-@app.route('/chain', methods=['GET'])
+@app.route('/get_chain', methods=['GET'])
 def get_chain():
     chain_data = [block.toDictionary() for block in blockchain.chain]
     logger.log(f"Returned blockchain with {len(chain_data)} blocks")
@@ -95,6 +120,15 @@ def register_nodes_bulk():
 def sync_chain():
     replaced = replace_chain()
     logger.log("Chain synchronization complete")
+
+    for block in blockchain.chain:
+        block_data = block.data
+        if isinstance(block_data, dict):
+            save_handler.save(stock_handler.handle(block_data))
+        elif isinstance(block_data, list):
+            for tx_data in block_data:
+                save_handler.save(stock_handler.handle(tx_data))
+
     return jsonify({
         "message": "Chain was replaced" if replaced else "No replacement was done",
         "chain": [block.toDictionary() for block in blockchain.chain]
@@ -126,11 +160,12 @@ def replace_chain():
 
     for node in peers:
         try:
-            response = requests.get(f"{node}/chain")
+            response = requests.get(f"{node}/get_chain")
             if response.status_code == 200:
                 data = response.json()
                 length = data['length']
                 chain_data = data['chain']
+                logger.log(data)
 
                 if length > max_length:
                     temp_chain = Blockchain()
@@ -142,6 +177,7 @@ def replace_chain():
                     if temp_chain.validate_chain() and length > max_length:
                         max_length = length
                         longest_chain = temp_chain.chain
+
         except Exception as e:
             logger.error(f"Could not connect to {node}. Error: {e}", Severity.HIGH)
 
