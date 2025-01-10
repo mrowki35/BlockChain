@@ -148,8 +148,16 @@ def tamper_block():
         logger.warning("Missing fields in /tamper_block request")
         return jsonify({"message": "Need block_index and new_data fields"}), 400
 
+    if block_index < 0 or block_index >= len(blockchain.chain):
+        logger.warning(f"Block index {block_index} out of range")
+        return jsonify({"message": "Block index out of range"}), 400
+
+    original_block = blockchain.chain[block_index].clone()
+    logger.log(f"Original block {block_index} cloned for backup: {original_block.toDictionary()}")
+
     blockchain.chain[block_index].data = new_data
     logger.warning(f"Block {block_index} tampered with: {new_data}")
+
     return jsonify({"message": f"Block {block_index} was tampered with."}), 200
 
 
