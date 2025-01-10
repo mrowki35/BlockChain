@@ -72,7 +72,7 @@ class Blockchain:
         """
         Funkcja pomocnicza do generowania wartości haszowania.
         """
-        to_digest = str(new_proof ** 2 - previous_proof ** 2 + index) + data
+        to_digest = str(new_proof ** 2 - previous_proof ** 2 + index) + json.dumps(data)
         return to_digest.encode()
 
     def validate_chain(self) -> bool:
