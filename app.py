@@ -2,165 +2,124 @@ from pathlib import Path
 from flask import Flask, jsonify, request
 import requests
 import sys
-
-# Importy z Twojego kodu
 from Blockchain.Blockchain import Blockchain
+from Logging.Logger import Logger
+from Logging.SeverityEnum import Severity
 
 app = Flask(__name__)
 
-# Każdy węzeł ma własną instancję Blockchain
-blockchain = Blockchain()
+# Initialize logger
+logger = Logger()
 
-# Zbiór adresów innych węzłów w sieci, np. "http://127.0.0.1:5001"
+# Blockchain instance and peers set
+blockchain = Blockchain()
 peers = set()
 
 
 @app.route('/', methods=['GET'])
 def home():
-    """
-    Prosta strona powitalna
-    """
+    logger.log("Accessed home endpoint")
     return "Hello from your Blockchain Node!"
 
 
 @app.route('/mine_block', methods=['POST'])
 def mine_block():
-    """
-    Endpoint do 'kopania' nowego bloku z przesłanymi w żądaniu danymi.
-    """
     data_json = request.get_json()
     if not data_json:
+        logger.warning("No data provided to /mine_block")
         return jsonify({"message": "No data provided"}), 400
 
-    # Dla uproszczenia oczekujemy klucza "data" w JSON
     data = data_json.get('data', "No data")
-
-    # Tworzymy nowy blok
     new_block = blockchain.mine_block(data=data)
-    # Zwracamy informacje o nowym bloku
+    logger.log(f"Block mined successfully: {new_block.toDictionary()}")
     return jsonify(new_block.toDictionary()), 200
 
 
 @app.route('/chain', methods=['GET'])
 def get_chain():
-    """
-    Zwraca cały aktualny łańcuch bloków w formacie JSON.
-    """
     chain_data = [block.toDictionary() for block in blockchain.chain]
-    response = {
-        "length": len(chain_data),
-        "chain": chain_data
-    }
-    return jsonify(response), 200
+    logger.log(f"Returned blockchain with {len(chain_data)} blocks")
+    return jsonify({"length": len(chain_data), "chain": chain_data}), 200
 
 
 @app.route('/is_valid', methods=['GET'])
 def is_valid():
-    """
-    Sprawdza, czy łańcuch jest poprawny.
-    """
     valid = blockchain.validate_chain()
-    response = {
-        "is_valid": valid
-    }
-    return jsonify(response), 200
+    logger.log(f"Blockchain validity checked: {valid}")
+    return jsonify({"is_valid": valid}), 200
 
 
 @app.route('/peers', methods=['GET'])
 def get_peers():
-    """
-    Zwraca listę znanych węzłów (peers).
-    """
+    logger.log("Accessed peers endpoint")
     return jsonify(list(peers)), 200
 
 
 @app.route('/register_node', methods=['POST'])
 def register_node():
-    """
-    Dodaje nowy węzeł do listy znanych węzłów.
-    Oczekuje w JSON klucza 'node_address', np. {"node_address": "http://127.0.0.1:5001"}
-    """
     data_json = request.get_json()
     if not data_json:
+        logger.warning("No data provided to /register_node")
         return jsonify({"message": "No data provided"}), 400
 
     node_address = data_json.get('node_address')
     if not node_address:
+        logger.warning("No node_address provided in /register_node")
         return jsonify({"message": "No node_address field provided"}), 400
 
     peers.add(node_address)
-
-    # Odpowiadamy listą wszystkich znanych węzłów
-    return jsonify({
-        "message": "New node added",
-        "all_nodes": list(peers)
-    }), 201
+    logger.log(f"New node registered: {node_address}")
+    return jsonify({"message": "New node added", "all_nodes": list(peers)}), 201
 
 
 @app.route('/register_nodes_bulk', methods=['POST'])
 def register_nodes_bulk():
-    """
-    Dodaje wiele nowych węzłów naraz.
-    Oczekuje w JSON klucza 'nodes', np. {"nodes": ["http://127.0.0.1:5001", "http://127.0.0.1:5002"]}
-    """
     data_json = request.get_json()
     if not data_json:
+        logger.warning("No data provided to /register_nodes_bulk")
         return jsonify({"message": "No data provided"}), 400
 
     nodes = data_json.get('nodes')
     if not nodes:
+        logger.warning("No nodes field provided in /register_nodes_bulk")
         return jsonify({"message": "No nodes field provided"}), 400
 
     for node in nodes:
         peers.add(node)
 
-    return jsonify({
-        "message": "New nodes have been added",
-        "all_nodes": list(peers)
-    }), 201
+    logger.log(f"Bulk registered nodes: {nodes}")
+    return jsonify({"message": "New nodes have been added", "all_nodes": list(peers)}), 201
 
 
 @app.route('/sync_chain', methods=['GET'])
 def sync_chain():
-    """
-    Próbuje zastąpić nasz łańcuch dłuższym (i poprawnym) łańcuchem od sąsiednich węzłów.
-    """
     replaced = replace_chain()
-    response = {
+    logger.log("Chain synchronization complete")
+    return jsonify({
         "message": "Chain was replaced" if replaced else "No replacement was done",
         "chain": [block.toDictionary() for block in blockchain.chain]
-    }
-    return jsonify(response), 200
+    }), 200
 
 
 @app.route('/tamper_block', methods=['POST'])
 def tamper_block():
-    """
-    UWAGA: Tylko do celów demonstracyjnych!!!
-    Pozwala 'zepsuć' któryś blok i zobaczyć, że walidacja wykaże błąd.
-    """
     data_json = request.get_json()
     if not data_json:
+        logger.warning("No data provided to /tamper_block")
         return jsonify({"message": "No data provided"}), 400
 
     block_index = data_json.get("block_index")
     new_data = data_json.get("new_data")
-
     if block_index is None or new_data is None:
+        logger.warning("Missing fields in /tamper_block request")
         return jsonify({"message": "Need block_index and new_data fields"}), 400
 
-    # Zakładamy, że blockchain ma tyle bloków, żeby ten index istniał
     blockchain.chain[block_index].data = new_data
-
+    logger.warning(f"Block {block_index} tampered with: {new_data}")
     return jsonify({"message": f"Block {block_index} was tampered with."}), 200
 
 
 def replace_chain():
-    """
-    Przechodzi przez wszystkie węzły, pobiera od nich łańcuch i sprawdza,
-    czy nie mają dłuższego (i ważnego) łańcucha niż my. Jeśli tak, to go przyjmujemy.
-    Zwraca True, jeśli łańcuch został zastąpiony, w przeciwnym wypadku False.
-    """
     global blockchain
     longest_chain = None
     max_length = len(blockchain.chain)
@@ -174,11 +133,9 @@ def replace_chain():
                 chain_data = data['chain']
 
                 if length > max_length:
-                    # Tymczasowo stwórz nową instancję Blockchain i sprawdź validację
                     temp_chain = Blockchain()
-                    temp_chain.chain = []  # Wyczyść i wypełnij ręcznie
+                    temp_chain.chain = []
 
-                    # Odtwarzamy łańcuch z JSON
                     for block_json in chain_data:
                         temp_chain.chain.append(_json_to_block(block_json))
 
@@ -186,19 +143,18 @@ def replace_chain():
                         max_length = length
                         longest_chain = temp_chain.chain
         except Exception as e:
-            print(f"Could not connect to {node}. Error: {e}")
+            logger.error(f"Could not connect to {node}. Error: {e}", Severity.HIGH)
 
     if longest_chain:
         blockchain.chain = longest_chain
+        logger.log("Blockchain replaced with longer valid chain")
         return True
 
+    logger.log("No valid longer chain found")
     return False
 
 
 def _json_to_block(block_json):
-    """
-    Pomocnicza funkcja do odtwarzania obiektu Block z formatu JSON.
-    """
     from Blockchain.Block import Block
     block = Block(
         data=block_json["data"],
@@ -211,16 +167,10 @@ def _json_to_block(block_json):
 
 
 if __name__ == "__main__":
-    """
-    Uruchamianie:
-        python app.py 5000
-    lub 
-        python app.py
-    aby domyślnie wystartować na porcie 5000
-    """
     if len(sys.argv) > 1:
         port = int(sys.argv[1])
     else:
         port = 5000
 
+    logger.log(f"Starting Blockchain Node on port {port}")
     app.run(host='0.0.0.0', port=port)

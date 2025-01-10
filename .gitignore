@@ -4,3 +4,4 @@
 /.venv
 /.idea
 /Tests/__pycache__
+application.log

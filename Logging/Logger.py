@@ -1,6 +1,6 @@
 import threading
 from datetime import datetime
-from SeverityEnum import Severity
+from Logging.SeverityEnum import Severity
 
 from enum import Enum, auto
 
@@ -51,4 +51,3 @@ class Logger:
         log_entry = f"{timestamp} [{level}] {message}"
         with open(self.file_name, "a") as log_file:
             log_file.write(log_entry + "\n")
-        # print(log_entry)
