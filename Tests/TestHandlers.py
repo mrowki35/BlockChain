@@ -1,5 +1,5 @@
 import unittest
-from Handlers.ValidationHandler import ValidationHandler
+from Handlers.GeneralValidationHandler import GeneralValidationHandler
 from Handlers.ComplianceHandler import ComplianceHandler
 from Handlers.ExecutionHandler import ExecutionHandler
 
@@ -7,7 +7,7 @@ from Handlers.ExecutionHandler import ExecutionHandler
 class TestTransactionHandlers(unittest.TestCase):
     def setUp(self):
         # Tworzenie łańcucha odpowiedzialności
-        self.validation_handler = ValidationHandler()
+        self.validation_handler = GeneralValidationHandler()
         self.compliance_handler = ComplianceHandler()
         self.execution_handler = ExecutionHandler()
 

@@ -5,7 +5,7 @@ from Blockchain.Blockchain import Blockchain
 from Handlers.CapitalTransactionHandler import CapitalTransactionHandler
 from Handlers.DividendTransactionHandler import DividendTransactionHandler
 from Handlers.StockTransactionHandler import StockTransactionHandler
-from Handlers.ValidationHandler import VotingTransactionHandler
+from Handlers.VotingTransactionHandler import VotingTransactionHandler
 from Handlers.save_handler import SaveHandler
 from Logging.Logger import Logger
 from Logging.SeverityEnum import Severity
