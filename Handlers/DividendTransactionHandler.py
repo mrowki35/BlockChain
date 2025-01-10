@@ -1,17 +1,27 @@
-from Handlers.TransactionHandler import TransactionHandler
-from Transactions.PayingDividendsTransaction import PayingDividendsTransaction
-from Transactions.Transaction import Transaction
+from .base_handler import TransactionHandler
+from Transactions.DividendFactory import DividendFactory
 
 
 class DividendTransactionHandler(TransactionHandler):
-    def process(self, transaction: Transaction) -> bool:
-        """
-        Walidacja transakcji dywidendowych.
-        """
-        if isinstance(transaction, PayingDividendsTransaction):
-            if transaction['dividend_per_share'] <= 0 or transaction['shares'] <= 0:
-                print("Validation failed: Invalid dividend parameters.")
-                return False
+    """
+    Handler dla transakcji wypłaty dywidend (PAYING_DIVIDENDS).
+    """
 
-        print("Dividend transaction validation passed.")
-        return super().process(transaction)
+    def __init__(self, next_handler=None):
+        super().__init__(next_handler)
+        self.factory = DividendFactory()
+
+    def handle(self, transaction_data: dict):
+        t_type = transaction_data.get("transaction_type", "")
+        if t_type == "PAYING_DIVIDENDS":
+            transaction = self.factory.create_transaction(**transaction_data)
+            if transaction.validate():
+                print(f"[DividendTransactionHandler] Transaction validated: {transaction.to_dict()}")
+            else:
+                print(f"[DividendTransactionHandler] Transaction invalid: {transaction.to_dict()}")
+            return transaction
+        else:
+            if self._next_handler:
+                return self._next_handler.save(transaction_data)
+            else:
+                return None

@@ -1,17 +1,29 @@
-from Handlers.TransactionHandler import TransactionHandler
-from Transactions.IncreasingCapitalTransaction import IncreasingCapitalTransaction
-from Transactions.Transaction import Transaction
+from .base_handler import TransactionHandler
+from Transactions.CapitalTransactionFactory import CapitalTransactionFactory
+from .save_handler import SaveHandler
 
 
 class CapitalTransactionHandler(TransactionHandler):
-    def process(self, transaction: Transaction) -> bool:
-        """
-        Walidacja transakcji kapitałowych.
-        """
-        if isinstance(transaction, IncreasingCapitalTransaction):
-            if transaction.data['additional_capital'] <= 0 or transaction.data['new_shares'] <= 0:
-                print("Validation failed: Invalid capital increase parameters.")
-                return False
+    """
+    Handler dla transakcji typu: INCREASING_CAPITAL itp.
+    """
 
-        print("Capital transaction validation passed.")
-        return super().process(transaction)
+    def __init__(self, next_handler=None):
+        super().__init__(next_handler)
+        self.factory = CapitalTransactionFactory()
+
+    def handle(self, transaction_data: dict):
+        t_type = transaction_data.get("transaction_type", "")
+        if t_type == "INCREASING_CAPITAL":
+            transaction = self.factory.create_transaction(**transaction_data)
+            if transaction.validate():
+                print(f"[CapitalTransactionHandler] Transaction validated: {transaction.to_dict()}")
+                return transaction
+            else:
+                print(f"[CapitalTransactionHandler] Transaction invalid: {transaction.to_dict()}")
+                return None
+        else:
+            if self._next_handler:
+                return self._next_handler.save(transaction_data)
+            else:
+                return None
