@@ -4,6 +4,7 @@ import json
 from Blockchain.Blockchain import Blockchain
 from Transactions.StockTransactionFactory import StockTransactionFactory
 
+
 class TestBlockchainTransactions(unittest.TestCase):
 
     def test_selling_shares_transaction(self):
@@ -24,7 +25,7 @@ class TestBlockchainTransactions(unittest.TestCase):
         self.assertTrue(tx_sell.validate(), "Transakcja SELLING_SHARES powinna być ważna.")
 
         # Kopiemy blok z danymi transakcji
-        blockchain.mineBlock(data=json.dumps(tx_sell.to_dict()))
+        blockchain.mine_block(data=json.dumps(tx_sell.to_dict()))
         # W łańcuchu powinny być 2 bloki (blok genezy + 1)
         self.assertEqual(len(blockchain.chain), 2)
 
@@ -40,7 +41,7 @@ class TestBlockchainTransactions(unittest.TestCase):
         self.assertEqual(block_data["price"], 500.0)
 
         # Sprawdzamy poprawność łańcucha
-        self.assertTrue(blockchain.validateChain())
+        self.assertTrue(blockchain.validate_chain())
 
     def test_buying_shares_transaction(self):
         """
@@ -60,7 +61,7 @@ class TestBlockchainTransactions(unittest.TestCase):
         self.assertTrue(tx_buy.validate(), "Transakcja BUYING_SHARES powinna być ważna.")
 
         # Kopiemy blok z danymi transakcji
-        blockchain.mineBlock(data=json.dumps(tx_buy.to_dict()))
+        blockchain.mine_block(data=json.dumps(tx_buy.to_dict()))
         # W łańcuchu powinny być 2 bloki (blok genezy + 1)
         self.assertEqual(len(blockchain.chain), 2)
 
@@ -76,7 +77,7 @@ class TestBlockchainTransactions(unittest.TestCase):
         self.assertEqual(block_data["price"], 750.0)
 
         # Sprawdzamy poprawność łańcucha
-        self.assertTrue(blockchain.validateChain())
+        self.assertTrue(blockchain.validate_chain())
 
     def test_multiple_transactions(self):
         """
@@ -113,15 +114,16 @@ class TestBlockchainTransactions(unittest.TestCase):
         self.assertTrue(tx3.validate())
 
         # Kopiemy bloki dla każdej z tych transakcji
-        blockchain.mineBlock(data=json.dumps(tx1.to_dict()))
-        blockchain.mineBlock(data=json.dumps(tx2.to_dict()))
-        blockchain.mineBlock(data=json.dumps(tx3.to_dict()))
+        blockchain.mine_block(data=json.dumps(tx1.to_dict()))
+        blockchain.mine_block(data=json.dumps(tx2.to_dict()))
+        blockchain.mine_block(data=json.dumps(tx3.to_dict()))
 
         # W łańcuchu: blok genezy + 3 nowe = 4
         self.assertEqual(len(blockchain.chain), 4)
 
         # Sprawdzamy poprawność łańcucha
-        self.assertTrue(blockchain.validateChain())
+        self.assertTrue(blockchain.validate_chain())
+
 
 if __name__ == "__main__":
     unittest.main()
