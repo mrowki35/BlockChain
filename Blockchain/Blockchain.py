@@ -2,6 +2,9 @@ from .BlockBuilder import BlockBuilder
 from .Block import Block
 import hashlib
 import json
+from Logging.Logger import Logger
+
+logger = Logger()
 
 
 class Blockchain:
@@ -72,7 +75,7 @@ class Blockchain:
         """
         Funkcja pomocnicza do generowania wartości haszowania.
         """
-        to_digest = str(new_proof ** 2 - previous_proof ** 2 + index) + json.dumps(data)
+        to_digest = str(new_proof ** 2 - previous_proof ** 2 + index) + json.dumps(data, sort_keys=True)
         return to_digest.encode()
 
     def validate_chain(self) -> bool:
