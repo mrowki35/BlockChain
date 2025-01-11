@@ -3,7 +3,8 @@ from Transactions.CapitalTransactionFactory import CapitalTransactionFactory
 from .save_handler import SaveHandler
 from Logging.Logger import Logger
 
-logger=Logger()
+logger = Logger()
+
 
 class CapitalTransactionHandler(TransactionHandler):
     """
@@ -26,6 +27,6 @@ class CapitalTransactionHandler(TransactionHandler):
                 return None
         else:
             if self._next_handler:
-                return self._next_handler.save(transaction_data)
+                return self._next_handler.handle(transaction_data)
             else:
                 return None

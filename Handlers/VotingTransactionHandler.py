@@ -1,7 +1,9 @@
 from .base_handler import TransactionHandler
 from Transactions.VotingTransactionFactory import VotingTransactionFactory
 from Logging.Logger import Logger
-logger=Logger()
+
+logger = Logger()
+
 
 class VotingTransactionHandler(TransactionHandler):
     """
@@ -25,6 +27,6 @@ class VotingTransactionHandler(TransactionHandler):
 
         else:
             if self._next_handler:
-                return self._next_handler.save(transaction_data)
+                return self._next_handler.handle(transaction_data)
             else:
                 return None

@@ -5,6 +5,7 @@ from Logging.Logger import Logger
 
 logger = Logger()
 
+
 class StockTransactionHandler(TransactionHandler):
     """
     Handler odpowiedzialny za transakcje na akcjach (akcje, sprzedaż, kupno itp.).
@@ -34,6 +35,6 @@ class StockTransactionHandler(TransactionHandler):
         else:
             # Delegujemy do next_handler
             if self._next_handler:
-                return self._next_handler.save(transaction_data)
+                return self._next_handler.handle(transaction_data)
             else:
                 return None

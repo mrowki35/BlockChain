@@ -24,6 +24,6 @@ class DividendTransactionHandler(TransactionHandler):
                 return None
         else:
             if self._next_handler:
-                return self._next_handler.save(transaction_data)
+                return self._next_handler.handle(transaction_data)
             else:
                 return None
