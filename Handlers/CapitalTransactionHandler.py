@@ -1,7 +1,9 @@
 from .base_handler import TransactionHandler
 from Transactions.CapitalTransactionFactory import CapitalTransactionFactory
 from .save_handler import SaveHandler
+from Logging.Logger import Logger
 
+logger=Logger()
 
 class CapitalTransactionHandler(TransactionHandler):
     """
@@ -17,10 +19,10 @@ class CapitalTransactionHandler(TransactionHandler):
         if t_type == "INCREASING_CAPITAL":
             transaction = self.factory.create_transaction(**transaction_data)
             if transaction.validate():
-                print(f"[CapitalTransactionHandler] Transaction validated: {transaction.to_dict()}")
+                logger.log(f"[CapitalTransactionHandler] Transaction validated: {transaction.to_dict()}")
                 return transaction
             else:
-                print(f"[CapitalTransactionHandler] Transaction invalid: {transaction.to_dict()}")
+                logger.log(f"[CapitalTransactionHandler] Transaction invalid: {transaction.to_dict()}")
                 return None
         else:
             if self._next_handler:

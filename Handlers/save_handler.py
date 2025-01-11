@@ -18,6 +18,8 @@ class SaveHandler:
         2. Zapisuje kopię do pliku w formacie JSON (jeden blok w jednej linii).
         3. Deleguje dalej do kolejnego handlera w łańcuchu (jeśli istnieje).
         """
+        if transaction is None:
+            return
         with self.output_file.open('a', encoding='utf-8') as f:
             f.write(json.dumps(transaction.to_dict(), ensure_ascii=False))
             f.write("\n")

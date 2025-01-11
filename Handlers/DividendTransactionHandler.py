@@ -1,6 +1,7 @@
 from .base_handler import TransactionHandler
 from Transactions.DividendFactory import DividendFactory
-
+from Logging.Logger import Logger
+logger = Logger()
 
 class DividendTransactionHandler(TransactionHandler):
     """
@@ -16,10 +17,11 @@ class DividendTransactionHandler(TransactionHandler):
         if t_type == "PAYING_DIVIDENDS":
             transaction = self.factory.create_transaction(**transaction_data)
             if transaction.validate():
-                print(f"[DividendTransactionHandler] Transaction validated: {transaction.to_dict()}")
+                logger.log(f"[DividendTransactionHandler] Transaction validated: {transaction.to_dict()}")
+                return transaction
             else:
-                print(f"[DividendTransactionHandler] Transaction invalid: {transaction.to_dict()}")
-            return transaction
+                logger.log(f"[DividendTransactionHandler] Transaction invalid: {transaction.to_dict()}")
+                return None
         else:
             if self._next_handler:
                 return self._next_handler.save(transaction_data)

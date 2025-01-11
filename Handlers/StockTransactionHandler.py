@@ -1,7 +1,9 @@
 from .base_handler import TransactionHandler
 from Transactions.StockTransactionFactory import StockTransactionFactory
 from Transactions.Transaction import Transaction
+from Logging.Logger import Logger
 
+logger = Logger()
 
 class StockTransactionHandler(TransactionHandler):
     """
@@ -22,12 +24,13 @@ class StockTransactionHandler(TransactionHandler):
             transaction = self.factory.create_transaction(**transaction_data)
             # Walidacja transakcji
             if transaction.validate():
-                print(f"[StockTransactionHandler] Transaction validated: {transaction.to_dict()}")
+                logger.log(f"[StockTransactionHandler] Transaction validated: {transaction.to_dict()}")
+                return transaction
             else:
-                print(f"[StockTransactionHandler] Transaction invalid: {transaction.to_dict()}")
-
+                logger.log(f"[StockTransactionHandler] Transaction invalid: {transaction.to_dict()}")
+                return None
             # Możemy zwrócić transakcję lub None
-            return transaction
+
         else:
             # Delegujemy do next_handler
             if self._next_handler:

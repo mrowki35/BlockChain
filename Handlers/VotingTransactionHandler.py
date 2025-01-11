@@ -1,6 +1,7 @@
 from .base_handler import TransactionHandler
 from Transactions.VotingTransactionFactory import VotingTransactionFactory
-
+from Logging.Logger import Logger
+logger=Logger()
 
 class VotingTransactionHandler(TransactionHandler):
     """
@@ -16,10 +17,12 @@ class VotingTransactionHandler(TransactionHandler):
         if t_type == "VOTING_RESULTS":
             transaction = self.factory.create_transaction(**transaction_data)
             if transaction.validate():
-                print(f"[VotingTransactionHandler] Transaction validated: {transaction.to_dict()}")
+                logger.log(f"[VotingTransactionHandler] Transaction validated: {transaction.to_dict()}")
+                return transaction
             else:
-                print(f"[VotingTransactionHandler] Transaction invalid: {transaction.to_dict()}")
-            return transaction
+                logger.log(f"[VotingTransactionHandler] Transaction invalid: {transaction.to_dict()}")
+                return None
+
         else:
             if self._next_handler:
                 return self._next_handler.save(transaction_data)
