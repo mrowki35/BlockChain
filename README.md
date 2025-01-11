@@ -1,5 +1,9 @@
 # Blockchain
 
+A basic blockchain implementation with multiple clients, transaction handlers, and chain synchronization features.
+
+---
+
 ## Table of Contents
 
 1. [Overview](#overview)
@@ -19,12 +23,16 @@
 9. [Contributors](#contributors)
 10. [License](#license)
 
+---
+
 ## Overview
 
 This project implements a basic blockchain system with multiple clients, transaction handlers, and chain synchronization
 features. The blockchain supports transaction validation, block mining, and peer-to-peer synchronization between nodes.
 It includes features like prototype pattern usage, chain of responsibility for transaction handling, and tamper-proof
 chain validation.
+
+---
 
 ## Features
 
