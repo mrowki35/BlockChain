@@ -1,5 +1,7 @@
 SERVER1 = http://127.0.0.1:2137
 SERVER2 = http://127.0.0.1:2138
+SERVER3 = http://127.0.0.1:2139
+SERVER4 = http://127.0.0.1:2140
 
 SELLING_SHARES_PAYLOAD = '{"data": {"transaction_type": "SELLING_SHARES", "seller": "Alice", "buyer": "Bob", "shares": 50, "price": 100.0}}'
 BUYING_SHARES_PAYLOAD   = '{"data": {"transaction_type": "BUYING_SHARES", "seller": "Alice", "buyer": "Bob", "shares": 50, "price": 100.0}}'
@@ -48,7 +50,9 @@ mine_block_voting:
 	-d $(VOTING_RESULTS_PAYLOAD) \
 	$(SERVER2)/mine_block
 
-test: register_node2_1 get_chain sync_chain get_chain
+mine_block_sample: mine_block_sell mine_block_buy mine_block_issue
+
+test: mine_block_sample register_node2_1
 
 get_chain:
 	curl $(SERVER2)/get_chain
@@ -57,7 +61,7 @@ sync_chain:
 	curl $(SERVER2)/sync_chain
 
 is_valid:
-	curl $(SERVER2)/is_valid
+	curl $(SERVER1)/is_valid
 
 peers:
 	curl $(SERVER2)/peers
@@ -65,6 +69,16 @@ peers:
 register_node2_1:
 	curl -X POST -H "Content-Type: application/json" \
 	-d '{"node_address": "$(SERVER1)"}' \
+	$(SERVER2)/register_node
+
+register_node2_3:
+	curl -X POST -H "Content-Type: application/json" \
+	-d '{"node_address": "$(SERVER3)"}' \
+	$(SERVER2)/register_node
+
+register_node2_4:
+	curl -X POST -H "Content-Type: application/json" \
+	-d '{"node_address": "$(SERVER4)"}' \
 	$(SERVER2)/register_node
 
 tamper_block:
