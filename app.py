@@ -62,7 +62,7 @@ def mine_block():
 
 @app.route('/get_chain', methods=['GET'])
 def get_chain():
-    chain_data = [block.toDictionary() for block in blockchain.chain]
+    chain_data = [block.toDictionary() for block in blockchain]
     logger.log(f"Returned blockchain with {len(chain_data)} blocks")
     return jsonify({"length": len(chain_data), "chain": chain_data}), 200
 
