@@ -121,7 +121,7 @@ def sync_chain():
     replaced = replace_chain()
     logger.log("Chain synchronization complete")
 
-    for block in blockchain.chain:
+    for block in blockchain:
         block_data = block.data
         if isinstance(block_data, dict):
             save_handler.save(stock_handler.handle(block_data))
