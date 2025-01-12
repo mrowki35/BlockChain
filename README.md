@@ -74,21 +74,42 @@ blockchain_project/
 │   ├── BlockBuilder.py      # Builder pattern for block creation
 ├── Handlers/
 │   ├── StockTransactionHandler.py  # Handler for stock-related transactions
-│   ├── CapitalTransactionHandler.py
-│   ├── DividendTransactionHandler.py
-│   ├── ValidationHandler.py
+│   ├── CapitalTransactionHandler.py # Handler for capital-related transactions
+│   ├── DividendTransactionHandler.py # Handler for dividend transactions
+│   ├── TransactionHandler.py # Defines a concrete class TransactionHandler that processes transactions and passes them to the next handler in the chain if it exists.
+│   ├── GeneralValidationHandler.py # Handler for general transaction validation, used in Unit tests
+│   ├── ExecutionHandler.py  # ExectutionHandler for executing transactions, used in Unit tests
 │   ├── save_handler.py      # SaveHandler for saving blocks and transactions
+│   ├── base_handler.py      # Abstract base class for handlers
 ├── Logging/
 │   ├── Logger.py            # Logging utility
 │   ├── SeverityEnum.py      # Severity levels for logging
 ├── Transactions/
 │   ├── Transaction.py       # Abstract base class for transactions
+│   ├── AbstractTransactionFactory.py # Abstract factory for creating transactions
+│   ├── BuyingSharesTransaction.py  # Transaction for buying shares
+│   ├── CapitalTranscationFactory.py # Factory for creating capital-related transactions, used in Unit tests
+│   ├── DividendFactory.py   # Factory for creating dividend transactions
+│   ├── GrantingStocksTransaction.py # Transaction for granting stocks
+│   ├── IncreasingCapitalTransaction.py # Transaction for increasing capital
+│   ├── IssuingStocksTransaction.py # Transaction for issuing stocks
+│   ├── SellingSharesTransaction.py # Transaction for selling shares
+│   ├── PayingDividendsTransaction.py # Transaction for paying dividends
 │   ├── StockTransactionFactory.py  # Factory for creating stock-related transactions
+│   ├── VotingResultsTransaction.py # Transaction for voting, used in Unit tests
+│   ├── VotingTransactionFactory.py # Factory for creating voting transactions, used in Unit tests
+
 ├── app.py                   # Main Flask application
 ├── tests/
-│   ├── TestBlockchain.py    # Unit tests for blockchain
+│   ├── BlockchainTest.py    # Unit tests for blockchain
 │   ├── TestHandlers.py       # Unit tests for handlers
-│   ├── TestTransactions.py  # Unit tests for transactions
+│   ├── TestBlockchainTransactions.py  # Unit tests for transactions
+│   ├── LoggerTest.py        # Unit tests for logging
+│   ├── TestCapitalTransaction.py # Unit tests for capital transaction 
+│   ├── TestVotingTransaction.py # Unit tests for voting transaction
+
+
+
 ├── requirements.txt         # Python dependencies
 └── README.md                # Project documentation
 ```
