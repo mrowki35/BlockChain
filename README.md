@@ -247,7 +247,7 @@ python -m unittest discover -s tests
 - [Maciej Michałek](https://github.com/McMichalek)
 - [Arkadiusz Mika](https://github.com/Arkadiusz4)
 - [Przemysław Orlikowski](https://github.com/mrowki35)
-- [Gabriela Czapska]()
+- [Gabriela Czapska](https://github.com/G-a-b-b-s)
 
 ---
 
